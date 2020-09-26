@@ -26,8 +26,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class UserInfo(models.Model):
-    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     address_1 = models.CharField(max_length=255)
     address_2 = models.CharField(max_length=255)
     mobile_no_1 = models.CharField(max_length=11)
     mobile_no_2 = models.CharField(max_length=11)
+
+    def __str__(self):
+        return user.email

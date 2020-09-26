@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Shop, Products, Category, Images
+from .models import Shop, Products, Category, Images, CustomerList
 from users.serializers import UserSerializer
 
 
@@ -23,3 +23,8 @@ class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Images
         fields = '__all__'
+
+class CustomerListSerializer(serializers.ModelSerializer):
+    class Meta:
+      model = CustomerList
+      fields = '__all__'

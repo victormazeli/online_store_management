@@ -5,7 +5,10 @@ from users import views
 urlpatterns = [
 
     path('user/<int:pk>/', views.UserDetail.as_view()),
-    path('user_info/<int:pk>/', views.UserInfo.as_view()),
+    path('update/<int:pk>/', views.UserDetail.as_view()),
+    path('user_info/<int:pk>/', views.ProfileInfo.as_view()),
+    path('user_info/update/<int:pk>/', views.ProfileInfo.as_view()),
+    path('user_info/create/', views.ProfileInfo.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

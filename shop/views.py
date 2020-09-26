@@ -7,8 +7,8 @@ from rest_framework.views import APIView
 from rest_framework import status, permissions
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
-from .models import Shop, Products, Category, Images
-from .serializers import ShopSerializer, ProductSerializer, CategorySerializer, ImageSerializer
+from .models import Shop, Products, Category, Images, CustomerList
+from .serializers import ShopSerializer, ProductSerializer, CategorySerializer, ImageSerializer, CustomerListSerializer
 
 # Create your views here.
 
@@ -23,6 +23,19 @@ class StoreCreation(APIView):##ensure to add permission class
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class StoreCustomersList(APIView):
+    def get(self, request, pk, format=None):
+        customer_list = CustomerList.objects.filter(shop_id=pk)
+        serializer = CustomerListSerializer(customer_list, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        serializer = CustomerListSerializer(data=request.data)
+        if serializer.is_valid():
+          serializer.save()
+          return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class StoreDetail(APIView):##ensure to add permission class
