@@ -21,7 +21,7 @@ cloudinary.config(
   api_secret = env('API_SECRET') 
 )
 
-env environ.Env(
+env= environ.Env(
 
     DEBUG=(bool, False)
 )
