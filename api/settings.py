@@ -15,16 +15,19 @@ import django_heroku
 import environ
 import cloudinary
 
+
+env= environ.Env(
+
+    DEBUG=(bool, False)
+)
+
 cloudinary.config( 
   cloud_name = env('CLOUD_NAME'), 
   api_key = env('API_KEY'), 
   api_secret = env('API_SECRET') 
 )
 
-env= environ.Env(
 
-    DEBUG=(bool, False)
-)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
