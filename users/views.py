@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import CustomUser, UserInfo
 from django.http import Http404
+from rest_framework.decorators import api_view
+from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -9,7 +11,14 @@ from .serializers import UserSerializer, UserInfoSerializer
 
 # Create your views here.
 
-class UserDetail(APIView):
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+
+        'user_profile': reverse('user-profile', request=request, format=format)
+    })
+
+# class UserDetail(APIView):
     try:
         def get_object(self, pk):
             return CustomUser.objects.get(pk=pk)
