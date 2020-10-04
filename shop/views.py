@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import Http404
+from django_filters.rest_framework import DjangoFilterBackend
 # import cloudinary
 # import cloudinary.uploader
 # import cloudinary.api
