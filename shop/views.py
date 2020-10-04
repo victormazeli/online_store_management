@@ -4,7 +4,7 @@ from django.http import Http404
 # import cloudinary.uploader
 # import cloudinary.api
 from rest_framework.views import APIView
-from django_filters.rest_framework import DjangoFilterBackend
+from django_filters import rest_framework as filterz
 from rest_framework import filters
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -30,7 +30,7 @@ class StoreCreation(APIView):##ensure to add permission class
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class StoreCustomersList(APIView):
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [filterz.DjangoFilterBackend]
     filterset_fields = ['shop']
     def get(self, request, format=None):
         customer_list = CustomerList.objects.all()
@@ -68,7 +68,7 @@ class StoreDetail(APIView):##ensure to add permission class
 
 class StoreProducts(APIView):##ensure to add permission class
      parser_classes = [MultiPartParser]
-     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+     filter_backends = [filterz.DjangoFilterBackend, filters.SearchFilter]
      filterset_fields = ['shop', 'category']
      search_fields = ['name']
     def get(self, request, format=None):
