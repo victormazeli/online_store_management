@@ -12,7 +12,7 @@ class Shop(models.Model):
     state = models.CharField(max_length=256, null=True, blank=True)
     city = models.CharField(max_length=256, null=True, blank=True)
     site_url = models.URLField(null=True, blank=True)
-    logo = model.ImageField(upload_to='/profile_pic', null=True, blank=True)
+    logo = models.ImageField(upload_to='/profile_pic', null=True, blank=True)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
     def __str__(self):
