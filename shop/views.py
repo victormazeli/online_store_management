@@ -1,11 +1,9 @@
 from django.shortcuts import render
 from django.http import Http404
-from django_filters.rest_framework import DjangoFilterBackend
 # import cloudinary
 # import cloudinary.uploader
 # import cloudinary.api
 from rest_framework.views import APIView
-from rest_framework import filters
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.parsers import MultiPartParser
@@ -30,10 +28,8 @@ class StoreCreation(APIView):##ensure to add permission class
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class StoreCustomersList(APIView):
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['shop']
-    def get(self, request, format=None):
-        customer_list = CustomerList.objects.all()
+    def get(self, request, pk, format=None):
+        customer_list = CustomerList.objects.filter(shop=pk)
         serializer = CustomerListSerializer(customer_list, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -68,11 +64,8 @@ class StoreDetail(APIView):##ensure to add permission class
 
 class StoreProducts(APIView):##ensure to add permission class
      parser_classes = [MultiPartParser]
-     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-     filterset_fields = ['shop', 'category']
-     search_fields = ['name']
-    def get(self, request, format=None):
-        products = Products.objects.all()
+    def get(self, request, pk, format=None):
+        products = Products.objects.filter(shop=pk)
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
