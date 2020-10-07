@@ -147,18 +147,18 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-# DATABASES = {
+DATABASES = {
    
-#     'default': env.db(),
-#     'default': {
-#         'ENGINE': 'django_tenants.postgresql_backend',
-#         'NAME': 'zeus_api', 
-#         'USER': 'postgres', 
-#         'PASSWORD': 'welcome@1',
-#         'HOST': '127.0.0.1', 
-#         'PORT': '5432',
-#     }
-# }
+    'default': env.db(),
+    # 'default': {
+    #     'ENGINE': 'django_tenants.postgresql_backend',
+    #     'NAME': 'zeus_api', 
+    #     'USER': 'postgres', 
+    #     'PASSWORD': 'welcome@1',
+    #     'HOST': '127.0.0.1', 
+    #     'PORT': '5432',
+    # }
+}
 
 DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',
@@ -212,12 +212,12 @@ MULTITENANT_RELATIVE_MEDIA_ROOT = ""
 config = locals()
 django_heroku.settings(config, databases=False)
 
-conn_max_age = config.get('CONN_MAX_AGE', 600) # Used in django-heroku
-config['DATABASES'] = {
-    'default': dj_database_url.parse(
-        os.environ['DATABASE_URL'],
-        engine='django_tenants.postgresql_backend',
-        conn_max_age=conn_max_age,
-        ssl_require=True
-        )
-}
+# conn_max_age = config.get('CONN_MAX_AGE', 600) # Used in django-heroku
+# config['DATABASES'] = {
+#     'default': dj_database_url.parse(
+#         os.environ['DATABASE_URL'],
+#         engine='django_tenants.postgresql_backend',
+#         conn_max_age=conn_max_age,
+#         ssl_require=True
+#         )
+# }
