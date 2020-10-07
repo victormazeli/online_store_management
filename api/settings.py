@@ -151,7 +151,7 @@ WSGI_APPLICATION = 'api.wsgi.application'
 
 DATABASES = {
    
-    'default': env.db(),
+    # 'default': env.db(),
     # 'default': {
     #     'ENGINE': 'django_tenants.postgresql_backend',
     #     'NAME': 'zeus_api', 
