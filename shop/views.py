@@ -14,7 +14,7 @@ from rest_framework.response import Response
 from .models import Shop, Products, Category, CustomerList, Domain
 from .serializers import ShopSerializer, ProductSerializer, CategorySerializer, CustomerListSerializer, DomainSerializer
 
-# Create your views here.
+# Api your views here.
 
 class StoreCreation(APIView):##ensure to add permission class
     permission_classes = [AllowAny]
