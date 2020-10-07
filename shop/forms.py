@@ -4,8 +4,6 @@ from django.contrib.auth.forms import UserCreationForm
 
 
 class SignUpForm(UserCreationForm):
-    is_customer = forms.BooleanField()
-
     class Meta:
         model = User
         fields = ('email', 'password1', 'password2')
