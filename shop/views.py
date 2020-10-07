@@ -183,14 +183,19 @@ class ProductDetail(DetailView):
 
 def signup_view(request):
     if request.method == 'POST':
-            form1 = SignUpForm(request.POST)
-            if form1.is_valid():
+        shop = Shop.objects.get(tenant=request.tenant)
+        customer = CustomerList()
+        form1 = SignUpForm(request.POST)
+        if form1.is_valid():
                 user= form1.save()
                 user.email = form1.cleaned_data.get('email')
                 user.password1 = form1.cleaned_data.get('password1')
                 user.is_marchant = True
                 user.save()
-            return redirect('login') 
+                customer.user = user.id
+                customer.shop = shop.id
+                customer.save()
+        return redirect('login') 
     else:
         form =SignUpForm()
         return render(request, 'registration/signup.html', {'form': form})
