@@ -1,5 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import DetailView, ListView, TemplateView
+from django.contrib.auth import login, authenticate
+from .forms import SignUpForm, LoginForm
 from django.http import Http404
 # import cloudinary
 # import cloudinary.uploader
@@ -179,17 +181,38 @@ class ProductDetail(DetailView):
     context_object_name = 'product_detail'
     template_name = 'shop/shop_single_product.html'
 
-# class CustomerLogin():
-#     """
-#     docstring
-#     """
-#     pass
+def signup_view(request):
+    if request.method == 'POST':
+            form1 = SignUpForm(request.POST)
+            if form1.is_valid():
+                user= form1.save()
+                user.email = form1.cleaned_data.get('email')
+                user.password1 = form1.cleaned_data.get('password1')
+                user.is_marchant = True
+                user.save()
+            return redirect('login') 
+    else:
+        form =SignUpForm()
+        return render(request, 'registration/signup.html', {'form': form})
 
-# class CustomerRegister():
-#     """
-#     docstring
-#     """
-#     pass
+
+def login_view(request):
+    if request.method == 'POST': 
+        email = request.POST['email']
+        password = request.POST['password1']
+        form2 = LoginForm(request.POST)
+        if form2.is_valid():
+            user = authenticate(email=email, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+        else:
+         return redirect('sign-up')
+    else:
+        form =LoginForm()
+        return render(request, 'registration/login_register.html', {'form': form})
+
+
 
 # class CustomerCart():
 #     """
