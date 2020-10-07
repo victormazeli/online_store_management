@@ -210,7 +210,7 @@ MEDIA_ROOT ='/media/'
 DEFAULT_FILE_STORAGE = "django_tenants.files.storage.TenantFileSystemStorage"
 MULTITENANT_RELATIVE_MEDIA_ROOT = ""
 config = locals()
-django_heroku.settings(config, database=False)
+django_heroku.settings(config, databases=False)
 
 conn_max_age = config.get('CONN_MAX_AGE', 600) # Used in django-heroku
 config['DATABASES'] = {
