@@ -16,10 +16,10 @@ import environ
 # import cloudinary
 
 
-# env= environ.Env(
+env= environ.Env(
 
-#     DEBUG=(bool, False)
-# )
+    DEBUG=(bool, False)
+)
 
 # cloudinary.config( 
 #   cloud_name = env('CLOUD_NAME'), 
