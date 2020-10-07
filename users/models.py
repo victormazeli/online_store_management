@@ -1,10 +1,9 @@
 from django.db import models
-from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-from shop.models import Products
+# from shop.models import Products
 
 from .managers import CustomUserManager
 

@@ -16,10 +16,10 @@ import environ
 # import cloudinary
 
 
-env= environ.Env(
+# env= environ.Env(
 
-    DEBUG=(bool, False)
-)
+#     DEBUG=(bool, False)
+# )
 
 # cloudinary.config( 
 #   cloud_name = env('CLOUD_NAME'), 
@@ -31,7 +31,7 @@ env= environ.Env(
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEMPLATE_DIR = os.path.join(BASE_DIR, '/templates/')
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates/')
 
 
 # Quick-start development settings - unsuitable for production
@@ -39,16 +39,23 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, '/templates/')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
+# SECRET_KEY = "b'\xf1^c\xe9\xc4'"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
+# DEBUG = True
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
+# ALLOWED_HOSTS = []
 
 
 # Application definition
 
-INSTALLED_APPS = [
+SHARED_APPS = (
+    'django_tenants', # mandatory, should always be before any django app
+    'shop', # you must list the app where your tenant model resides in
+    'users', 
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -59,13 +66,29 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
-    'cloudinary',
-    'users',
+
+)
+
+TENANT_APPS = (
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
+
+    # your tenant-specific apps
     'customers',
     'orders',
-    'shop',
-    'transaction'
-]
+    'sales',
+    'transaction',
+)
+
+INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
 
 SITE_ID = 1
 
@@ -86,9 +109,11 @@ REST_FRAMEWORK = {
 
     
 }
-
+TENANT_MODEL = "shop.Shop" # app.Model
+TENANT_DOMAIN_MODEL = "shop.Domain"
 AUTH_USER_MODEL = 'users.CustomUser'
 MIDDLEWARE = [
+    'django_tenants.middleware.main.TenantMainMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -124,8 +149,19 @@ WSGI_APPLICATION = 'api.wsgi.application'
 
 DATABASES = {
     'default': env.db(),
+    # 'default': {
+    #     'ENGINE': 'django_tenants.postgresql_backend',
+    #     'NAME': 'zeus_api', 
+    #     'USER': 'postgres', 
+    #     'PASSWORD': 'welcome@1',
+    #     'HOST': '127.0.0.1', 
+    #     'PORT': '5432',
+    # }
 }
 
+DATABASE_ROUTERS = (
+    'django_tenants.routers.TenantSyncRouter',
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -163,7 +199,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+STATICFILES_DIRS =[os.path.join(BASE_DIR, 'static'),]
 STATIC_URL = '/static/'
-MEDIA_URL = os.path.join(BASE_DIR, 'media')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_STORAGE = "django_tenants.staticfiles.storage.TenantStaticFilesStorage"
+MULTITENANT_RELATIVE_STATIC_ROOT = ""
+MEDIA_URL = os.path.join(BASE_DIR, 'media/')
 MEDIA_ROOT ='/media/'
+DEFAULT_FILE_STORAGE = "django_tenants.files.storage.TenantFileSystemStorage"
+MULTITENANT_RELATIVE_MEDIA_ROOT = ""
 django_heroku.settings(locals())

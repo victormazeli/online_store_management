@@ -3,8 +3,14 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from shop import views
 
 urlpatterns = [
+    path('', views.Home.as_view()),
+    path('products/', views.StoreProduct.as_view(), name='product-list'),
+    path('products_detail/<int:pk/', views.ProductDetail.as_view(), name='product-detail'),
+
     path('get_all_store/', views.StoreCreation.as_view()),
     path('create_store/', views.StoreCreation.as_view()),
+    path('get_store_domain/<int:pk>/', views.StoreDomainCreation.as_view()),
+    path('create_store_domain/', views.StoreDomainCreation.as_view()),
     path('store_detail/<int:pk>/', views.StoreDetail.as_view()),
     path('customer_list/<int:pk>/', views.StoreCustomersList.as_view()),
     path('update_store/<int:pk>/', views.StoreDetail.as_view()),

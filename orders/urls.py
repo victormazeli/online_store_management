@@ -6,10 +6,10 @@ urlpatterns = [
 
     path('store/product_ordered/<int:pk>/', views.ProductOrdered.as_view()),
     path('store/create_order/', views.CreateOrder.as_view()),
-    # path('store/add_order_item/', views.AddItem.as_view()),
+    path('store/add_order_item/', views.AddItem.as_view()),
     path('store/delete_order/<int:pk>/', views.OrdersDetail.as_view()),
     # path('store/order_item_update/<int:pk>/', views.OrderItemDetail.as_view()),
-    # path('store/order_item_delete/<int:pk>/', views.OrderItemDetail.as_view()),
+    path('store/order_item_delete/<int:pk>/', views.OrderItemDetail.as_view()),
 
 ]
 

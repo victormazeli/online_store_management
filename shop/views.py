@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import DetailView, ListView, TemplateView
 from django.http import Http404
 # import cloudinary
 # import cloudinary.uploader
@@ -8,8 +9,8 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
-from .models import Shop, Products, Category, Images, CustomerList
-from .serializers import ShopSerializer, ProductSerializer, CategorySerializer, ImageSerializer, CustomerListSerializer
+from .models import Shop, Products, Category, CustomerList, Domain
+from .serializers import ShopSerializer, ProductSerializer, CategorySerializer, CustomerListSerializer, DomainSerializer
 
 # Create your views here.
 
@@ -26,6 +27,22 @@ class StoreCreation(APIView):##ensure to add permission class
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class StoreDomainCreation(APIView):##ensure to add permission class
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk, format=None):
+        store = Domain.objects.get(tenant=pk)
+        serializer = DomainSerializer(store)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, format=None):
+        serializer = DomainSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class StoreCustomersList(APIView):
     def get(self, request, pk, format=None):
@@ -64,26 +81,26 @@ class StoreDetail(APIView):##ensure to add permission class
 
 class StoreProducts(APIView):##ensure to add permission class
      parser_classes = [MultiPartParser]
-    def get(self, request, pk, format=None):
-        products = Products.objects.filter(shop=pk)
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def post(self, request, format=None):
-        serializer = ProductSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+     def get(self, request, pk, format=None):
+         products = Products.objects.filter(shop=pk)
+         serializer = ProductSerializer(products, many=True)
+         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+     def post(self, request, format=None):
+         serializer = ProductSerializer(data=request.data)
+         if serializer.is_valid():
+             serializer.save()
+             return Response(serializer.data, status=status.HTTP_201_CREATED)
+         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 
 # class ProductImageUpload(APIView):
-    parser_classes = [MultiPartParser]
-    def post(self, request, format=None):
-        serializer = ImageSerializer(data=request.data)
-        if serializer.is_valid():
-          serializer.save()
-          return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # parser_classes = [MultiPartParser]
+    # def post(self, request, format=None):
+    #     serializer = ImageSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #       serializer.save()
+    #       return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class StoreProductDetail(APIView):
@@ -111,10 +128,8 @@ class StoreProductDetail(APIView):
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)    
 
-class StorCategory(APIView):
-    """
-    docstring
-    """
+class StoreCategory(APIView):
+
     def post(self, request, format=None):
 
         serializer = CategorySerializer(data=request.data)
@@ -127,3 +142,75 @@ class StorCategory(APIView):
         products = Category.objects.all()
         serializer = CategorySerializer(products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+##Storefront view code snippets
+
+class Home(TemplateView):
+    """
+    Store Home page
+    """
+    template_name = 'shop/index_shop.html'
+
+    def get_context_data(self, **Kwargs):
+        context = super().get_context_data(**Kwargs)
+        domain = Domain.objects.get(tenant=self.request.tenant)
+        context['store'] = domain
+        context['store_products'] = Products.objects.filter(shop=domain.tenant)[:5]
+        return context    
+
+
+class StoreProduct(ListView):
+    """
+    Store products
+    """
+    template_name = 'shop/shop_product_col_4.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        self.domain = get_object_or_404(Domain, tenant=self.request.tenant)
+        return Products.objects.filter(shop=self.domain.tenant)
+
+class ProductDetail(DetailView):
+    """
+    product detail
+    """
+    queryset = Products.objects.all()
+    context_object_name = 'product_detail'
+    template_name = 'shop/shop_single_product.html'
+
+# class CustomerLogin():
+#     """
+#     docstring
+#     """
+#     pass
+
+# class CustomerRegister():
+#     """
+#     docstring
+#     """
+#     pass
+
+# class CustomerCart():
+#     """
+#     docstring
+#     """
+#     pass
+
+# class CustomerCartDetail():
+#     """
+#     docstring
+#     """
+#     pass
+
+# class CustomerOrder():
+#     """
+#     docstring
+#     """
+#     pass
+
+# class CustomerOrderDetail():
+#     """
+#     docstring
+#     """
+#     pass
