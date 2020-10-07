@@ -147,14 +147,14 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-    conn_max_age = config.get('CONN_MAX_AGE', 600) # Used in django-heroku
-    config['DATABASES'] = {
+conn_max_age = config.get('CONN_MAX_AGE', 600) # Used in django-heroku
+config['DATABASES'] = {
     'default': dj_database_url.parse(
-    os.environ['DATABASE_URL'],
-    engine='django_tenants.postgresql_backend',
-    conn_max_age=conn_max_age,
-    ssl_require=True
-)
+        os.environ['DATABASE_URL'],
+        engine='django_tenants.postgresql_backend',
+        conn_max_age=conn_max_age,
+        ssl_require=True
+        )
 }
 
 # DATABASES = {
