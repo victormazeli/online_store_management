@@ -5,7 +5,8 @@ from users import views
 urlpatterns = [
 
     path('', views.api_root),
-    # path('update/<int:pk>/', views.UserDetail.as_view()),
+    path('get_user/<int:pk>/', views.UserDetail.as_view()),
+    path('update/<int:pk>/', views.UserDetail.as_view()),
     path('user_info/<int:pk>/', views.ProfileInfo.as_view()),
     path('user_info/update/<int:pk>/', views.ProfileInfo.as_view()),
     path('user_info/create/', views.ProfileInfo.as_view(), name='user-profile'),

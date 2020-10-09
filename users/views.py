@@ -18,11 +18,11 @@ def api_root(request, format=None):
         'user_profile': reverse('user-profile', request=request, format=format)
     })
 
-# class UserDetail(APIView):
+class UserDetail(APIView):
     try:
         def get_object(self, pk):
             return CustomUser.objects.get(pk=pk)
-    except user.DoesNotExist:
+    except CustomUser.DoesNotExist:
         raise Http404
 
     def get(self, request, pk, format=None):
@@ -43,7 +43,7 @@ class ProfileInfo(APIView):
         try:
             def get_object(self, pk):
                 return UserInfo.objects.get(user_id=pk)
-        except user.DoesNotExist:
+        except UserInfo.DoesNotExist:
             raise Http404
         
         def get(self, request, pk, format=None):

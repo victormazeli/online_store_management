@@ -152,7 +152,7 @@ WSGI_APPLICATION = 'api.wsgi.application'
 
 DATABASES = {
    
-    # 'default': env.db(),
+    'default': env.db(),
     # 'default': {
     #     'ENGINE': 'django_tenants.postgresql_backend',
     #     'NAME': 'zeus_api', 
@@ -212,15 +212,15 @@ MEDIA_URL = os.path.join(BASE_DIR, 'media/')
 MEDIA_ROOT ='/media/'
 DEFAULT_FILE_STORAGE = "django_tenants.files.storage.TenantFileSystemStorage"
 MULTITENANT_RELATIVE_MEDIA_ROOT = ""
-config = locals()
-django_heroku.settings(config, databases=False)
+# config = locals()
+# django_heroku.settings(config, databases=False)
 
-conn_max_age = config.get('CONN_MAX_AGE', 600) # Used in django-heroku
-config['DATABASES'] = {
-    'default': dj_database_url.parse(
-        os.environ['DATABASE_URL'],
-        engine='django_tenants.postgresql_backend',
-        conn_max_age=conn_max_age,
-        ssl_require=True
-        )
-}
+# conn_max_age = config.get('CONN_MAX_AGE', 600) # Used in django-heroku
+# config['DATABASES'] = {
+#     'default': dj_database_url.parse(
+#         os.environ['DATABASE_URL'],
+#         engine='django_tenants.postgresql_backend',
+#         conn_max_age=conn_max_age,
+#         ssl_require=True
+#         )
+# }
