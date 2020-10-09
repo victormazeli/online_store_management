@@ -1,3 +1,4 @@
+
 """
 Django settings for api project.
 
@@ -18,11 +19,11 @@ import dj_database_url
 # import cloudinary
 
 
-env= environ.Env(
+#env= environ.Env(
 
-    DEBUG=(bool, False)
-)
-env.read_env(env.str('ENV_PATH', 'api/.bashrc'))
+   # DEBUG=(bool, False)
+#)
+#env.read_env(env.str('ENV_PATH', 'api/.bashrc'))
 
 # cloudinary.config( 
 #   cloud_name = env('CLOUD_NAME'), 
@@ -41,15 +42,15 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates/')
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
-# SECRET_KEY = "b'\xf1^c\xe9\xc4'"
+#SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = "b'\xf1^c\xe9\xc4'"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
-# DEBUG = True
+#DEBUG = env('DEBUG')
+DEBUG = False
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
-# ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -153,15 +154,15 @@ WSGI_APPLICATION = 'api.wsgi.application'
 
 DATABASES = {
    
-    'default': env.db(),
-    # 'default': {
-    #     'ENGINE': 'django_tenants.postgresql_backend',
-    #     'NAME': 'zeus_api', 
-    #     'USER': 'postgres', 
-    #     'PASSWORD': 'welcome@1',
-    #     'HOST': '127.0.0.1', 
-    #     'PORT': '5432',
-    # }
+    #'default': env.db(),
+     'default': {
+         'ENGINE': 'django_tenants.postgresql_backend',
+         'NAME': 'zeus_api', 
+         'USER': 'zeusadmin', 
+         'PASSWORD': 'welcome@1',
+         'HOST': 'localhost', 
+         'PORT': '',
+     }
 }
 
 DATABASE_ROUTERS = (
