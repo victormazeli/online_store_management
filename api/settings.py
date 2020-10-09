@@ -22,6 +22,7 @@ env= environ.Env(
 
     DEBUG=(bool, False)
 )
+env.read_env(env.str('ENV_PATH', 'api/.bashrc'))
 
 # cloudinary.config( 
 #   cloud_name = env('CLOUD_NAME'), 
