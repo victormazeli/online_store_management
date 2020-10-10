@@ -50,7 +50,7 @@ SECRET_KEY = "b'\xf1^c\xe9\xc4'"
 DEBUG = False
 
 #ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
-ALLOWED_HOSTS = ['165.227.196.66', '127.0.0.1' ]
+ALLOWED_HOSTS = ['165.227.196.66', 'localhost' ]
 
 
 # Application definition
