@@ -133,7 +133,6 @@ class StoreProductDetail(APIView):
 class StoreCategory(APIView):
 
     def post(self, request, format=None):
-
         serializer = CategorySerializer(data=request.data)
         if serializer.is_valid():
           serializer.save()
@@ -143,6 +142,12 @@ class StoreCategory(APIView):
     def get(self, request, format=None):
         products = Category.objects.all()
         serializer = CategorySerializer(products, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def get(self, request, name, format=None):
+        category = Category.objects.get(category_name=name)
+        products = Products.objects.filter(category=category)
+        serializer = ProductSerializer(products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

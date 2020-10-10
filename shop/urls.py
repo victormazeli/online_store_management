@@ -18,6 +18,8 @@ urlpatterns = [
     path('update_store/<int:pk>/', views.StoreDetail.as_view()),
     path('add_product/', views.StoreProducts.as_view()),
     path('add_category/', views.StoreCategory.as_view()),
+    path('get_categories/', views.StoreCategory.as_view()),
+    path('products_by_category/<name>/', views.StoreCategory.as_view()),
     # path('product_image_upload/', views.ProductImageUpload.as_view()),
     path('store_product/<int:pk>/', views.StoreProducts.as_view()),
     path('product_detail/<int:pk>/', views.StoreProductDetail.as_view()),

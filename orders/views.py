@@ -5,7 +5,7 @@ from rest_framework import status, permissions
 from rest_framework.response import Response
 from shop.models import Shop, Products
 from .models import Order, OrderedItem, OrderStatus
-from .serializers import OrderedItemSerializers, OrderSerializer, OrderStatusSerializer
+from .serializers import OrderedItemSerializers, OrderStatusSerializer, OrderSerializer
 
 # Create your views here.
 
@@ -15,8 +15,6 @@ class ProductOrdered(APIView):
         serializer = OrderedItemSerializers(items_ordered, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    # def get(self, request, pk, format=None):
-    #     pass
 
 class CreateOrder(APIView):
     def post(self, request, format=True):
@@ -30,7 +28,7 @@ class CreateOrder(APIView):
 class AddItem(APIView):
     def put(self, request, pk, format=True):
         order = Order.objects.get(pk=pk)
-        serializer = OrderSerializers(order, data=request.data, partial=True)
+        serializer = OrderSerializer(order, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -68,3 +66,9 @@ class OrderItemDetail(APIView):
         ordererd_item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class OrderStatus(APIView):
+    def get(self, request, name, format=True):
+        order_status = OrderStatus.objects.get(status=name)
+        orders = Order.objects.filter(status=order_status)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
