@@ -19,10 +19,10 @@ import dj_database_url
 # import cloudinary
 
 
-#env= environ.Env(
+env= environ.Env(
 
-   # DEBUG=(bool, False)
-#)
+   DEBUG=(bool, False)
+)
 #env.read_env(env.str('ENV_PATH', 'api/.bashrc'))
 
 # cloudinary.config( 
@@ -42,15 +42,15 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates/')
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = env('SECRET_KEY')
-SECRET_KEY = "b'\xf1^c\xe9\xc4'"
+SECRET_KEY = env('SECRET_KEY')
+# SECRET_KEY = "b'\xf1^c\xe9\xc4'"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = env('DEBUG')
-DEBUG = False
+DEBUG = env('DEBUG')
+# DEBUG = False
 
-#ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
-ALLOWED_HOSTS = ['165.227.196.66', 'localhost' ]
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
+# ALLOWED_HOSTS = ['165.227.196.66', 'localhost' ]
 
 
 # Application definition
@@ -154,15 +154,15 @@ WSGI_APPLICATION = 'api.wsgi.application'
 
 DATABASES = {
    
-    #'default': env.db(),
-     'default': {
-         'ENGINE': 'django_tenants.postgresql_backend',
-         'NAME': 'zeus_api', 
-         'USER': 'zeusadmin', 
-         'PASSWORD': 'welcome@1',
-         'HOST': 'localhost', 
-         'PORT': '',
-     }
+    # 'default': env.db(),
+    #  'default': {
+    #      'ENGINE': 'django_tenants.postgresql_backend',
+    #      'NAME': 'zeus_api', 
+    #      'USER': 'postgres', 
+    #      'PASSWORD': 'welcome@1',
+    #      'HOST': 'localhost', 
+    #      'PORT': '5432',
+    #  }
 }
 
 DATABASE_ROUTERS = (
@@ -214,15 +214,15 @@ MEDIA_URL = os.path.join(BASE_DIR, 'media/')
 MEDIA_ROOT ='/media/'
 DEFAULT_FILE_STORAGE = "django_tenants.files.storage.TenantFileSystemStorage"
 MULTITENANT_RELATIVE_MEDIA_ROOT = ""
-# config = locals()
-# django_heroku.settings(config, databases=False)
+config = locals()
+django_heroku.settings(config, databases=False)
 
-# conn_max_age = config.get('CONN_MAX_AGE', 600) # Used in django-heroku
-# config['DATABASES'] = {
-#     'default': dj_database_url.parse(
-#         os.environ['DATABASE_URL'],
-#         engine='django_tenants.postgresql_backend',
-#         conn_max_age=conn_max_age,
-#         ssl_require=True
-#         )
-# }
+conn_max_age = config.get('CONN_MAX_AGE', 600) # Used in django-heroku
+config['DATABASES'] = {
+    'default': dj_database_url.parse(
+        os.environ['DATABASE_URL'],
+        engine='django_tenants.postgresql_backend',
+        conn_max_age=conn_max_age,
+        ssl_require=True
+        )
+}

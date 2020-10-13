@@ -1,6 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser
-from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 # from shop.models import Products
@@ -8,13 +7,12 @@ from django.utils import timezone
 from .managers import CustomUserManager
 
 
-class CustomUser(AbstractBaseUser, PermissionsMixin):
+class CustomUser(AbstractUser):
+    username = None
     email = models.EmailField(_('email address'), unique=True)
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    is_marchant = models.BooleanField(null=True)
-    is_customer = models.BooleanField(null=True)
-    date_joined = models.DateTimeField(default=timezone.now)
+    address = models.CharField(max_length=256, blank=True, null=True )
+    phone_no = models.PositiveIntegerField(blank=True, null=True)
+  
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -25,12 +23,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
-class UserInfo(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    address_1 = models.CharField(max_length=255)
-    address_2 = models.CharField(max_length=255)
-    mobile_no_1 = models.CharField(max_length=11)
-    mobile_no_2 = models.CharField(max_length=11)
+# class UserInfo(models.Model):
+#     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    
 
-    def __str__(self):
-        return user.email
+#     def __str__(self):
+#         return user.email

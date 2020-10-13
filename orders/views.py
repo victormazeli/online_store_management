@@ -9,10 +9,10 @@ from .serializers import OrderedItemSerializers, OrderStatusSerializer, OrderSer
 
 # Create your views here.
 
-class ProductOrdered(APIView):
+class GetOrders(APIView):
     def get(self, request, pk, format=None):
-        items_ordered = OrderedItem.objects.filter(products__shop=pk)
-        serializer = OrderedItemSerializers(items_ordered, many=True)
+        order = Order.objects.filter(shop_id=pk).order_by('-created_at')
+        serializer = OrderedItemSerializers(order, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 
@@ -67,8 +67,8 @@ class OrderItemDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class OrderStatus(APIView):
-    def get(self, request, name, format=True):
-        order_status = OrderStatus.objects.get(status=name)
+    def get(self, request, pk, format=True):
+        order_status = OrderStatus.objects.get(pk=pk)
         orders = Order.objects.filter(status=order_status)
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
