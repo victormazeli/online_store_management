@@ -12,26 +12,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-import django_heroku
-import environ
-import dj_database_url
-
-# import cloudinary
-
-
-env= environ.Env(
-
-   DEBUG=(bool, False)
-)
-#env.read_env(env.str('ENV_PATH', 'api/.bashrc'))
-
-# cloudinary.config( 
-#   cloud_name = env('CLOUD_NAME'), 
-#   api_key = env('API_KEY'), 
-#   api_secret = env('API_SECRET') 
-# )
-
-
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -42,15 +22,16 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates/')
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
-# SECRET_KEY = "b'\xf1^c\xe9\xc4'"
+# SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'wiejiwiwrwiriw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
-# DEBUG = False
+# DEBUG = int(os.environ.get('DEBUG', default=0))
+DEBUG = True
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
-# ALLOWED_HOSTS = ['165.227.196.66', 'localhost' ]
+# ALLOWED_HOSTS = os.environ.get('ALLOWED_HOST')
+ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -58,7 +39,8 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 SHARED_APPS = (
     'django_tenants', # mandatory, should always be before any django app
     'shop', # you must list the app where your tenant model resides in
-    'users', 
+    'users',
+    
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -67,9 +49,9 @@ SHARED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
-    'djoser',
     'bootstrap4',
 
 )
@@ -82,15 +64,16 @@ TENANT_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
-    'djoser',
 
     # your tenant-specific apps
-    'customers',
-    'orders',
+    'products',
     'sales',
-    'transaction',
+    'orders',
+    'customers',
+   
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
@@ -111,7 +94,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-
+ 
     
 }
 TENANT_MODEL = "shop.Shop" # app.Model
@@ -153,15 +136,24 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
+
+    'default': {
+         'ENGINE': 'django_tenants.postgresql_backend',
+         'NAME': 'postgres', 
+         'USER': 'postgres', 
+         'PASSWORD': 'welcome@1',
+         'HOST': 'localhost', 
+         'PORT': '5432',
+     }
    
-    # 'default': env.db(),
+
     #  'default': {
-    #      'ENGINE': 'django_tenants.postgresql_backend',
-    #      'NAME': 'zeus_api', 
-    #      'USER': 'postgres', 
-    #      'PASSWORD': 'welcome@1',
-    #      'HOST': 'localhost', 
-    #      'PORT': '5432',
+    #      'ENGINE': os.environ.get('DATABASE_ENGINE'),
+    #      'NAME': os.environ.get('DATABASE_NAME'), 
+    #      'USER': os.environ.get('DATABASE_USER'), 
+    #      'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+    #      'HOST': os.environ.get('DATABASE_HOST'), 
+    #      'PORT': os.environ.get('DATABASE_PORT'),
     #  }
 }
 
@@ -205,24 +197,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-# STATICFILES_DIRS =[os.path.join(BASE_DIR, 'static'),]
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_STORAGE = "django_tenants.staticfiles.storage.TenantStaticFilesStorage"
 MULTITENANT_RELATIVE_STATIC_ROOT = ""
-MEDIA_URL = os.path.join(BASE_DIR, 'media/')
-MEDIA_ROOT ='/media/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_FILE_STORAGE = "django_tenants.files.storage.TenantFileSystemStorage"
 MULTITENANT_RELATIVE_MEDIA_ROOT = ""
-# config = locals()
-# django_heroku.settings(config, databases=False)
-
-# conn_max_age = config.get('CONN_MAX_AGE', 600) # Used in django-heroku
-# config['DATABASES'] = {
-#     'default': dj_database_url.parse(
-#         os.environ['DATABASE_URL'],
-#         engine='django_tenants.postgresql_backend',
-#         conn_max_age=conn_max_age,
-#         ssl_require=True
-#         )
-# }
