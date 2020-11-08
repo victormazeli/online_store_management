@@ -8,14 +8,7 @@ from orders.models import Order
 ##Storefront view
 
 def index(request):
-    shop_details = Shop.objects.get(tenant=request.tenant)
-    store = {
-        'store_name':shop_details.tenant.name, 
-        'store_tagline':shop_details.tenant.tagline, 
-        'logo':shop_details.tenant.logo,
-        'description': shop_details.tenant.description
-        }
-    return render(request, context=store)
+    return render(request)
 
 # def collections(request):
 #     return render(request)
