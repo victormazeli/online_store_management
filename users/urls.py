@@ -4,11 +4,12 @@ from users import views
 
 urlpatterns = [
 
-    # path('get_user/<int:pk>/', views.UserDetail.as_view()),
-    # path('update/<int:pk>/', views.UserDetail.as_view()),
-    # path('user_info/<int:pk>/', views.ProfileInfo.as_view()),
-    # path('user_info/update/<int:pk>/', views.ProfileInfo.as_view()),
-    # path('user_info/create/', views.ProfileInfo.as_view(), name='user-profile'),
+    path('get_user/<int:pk>/', views.UserDetail.as_view()),
+    path('update/<int:pk>/', views.UserDetail.as_view()),
+    path('registration/', views.Registration.as_view()),
+    path('get_store/', views.StoreDetail.as_view()),
+    path('update_store/', views.StoreDetail.as_view()),
+   
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

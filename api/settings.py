@@ -38,13 +38,12 @@ ALLOWED_HOSTS = []
 
 SHARED_APPS = (
     'django_tenants', # mandatory, should always be before any django app
-    'shop', # you must list the app where your tenant model resides in
-    'users',
     
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'tenant_users.permissions', # Defined in both shared apps and tenant apps
+    'tenant_users.tenants',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -52,6 +51,9 @@ SHARED_APPS = (
     'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
+    'shop', # you must list the app where your tenant model resides in
+    'users',
+   
     'bootstrap4',
 
 )
@@ -60,6 +62,7 @@ TENANT_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'tenant_users.permissions',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -97,6 +100,7 @@ REST_FRAMEWORK = {
  
     
 }
+TENANT_USERS_DOMAIN = "cyphertech.com.ng"
 TENANT_MODEL = "shop.Shop" # app.Model
 TENANT_DOMAIN_MODEL = "shop.Domain"
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -161,6 +165,9 @@ DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',
 )
 
+AUTHENTICATION_BACKENDS = (
+    'tenant_users.permissions.backend.UserBackend',
+)
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
