@@ -28,7 +28,7 @@ class Registration(APIView):##ensure to add permission class
 
 class StoreDetail(APIView):
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['status', 'id']
+    filterset_fields = ['status', 'id', 'owner']
 
     try:
         def get_object(self, pk):
