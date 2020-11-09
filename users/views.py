@@ -26,7 +26,7 @@ class Registration(APIView):##ensure to add permission class
            'tagline':request.data['tagline'], 
            'schema_name':request.data['schema_name'] 
            }
-        domain_data = {'fdqn':request.data['name'] + ".cyphertech.com.ng"}
+        domain_data = {'domain':request.data['name'] + ".cyphertech.com.ng", 'is_primary':True}
         shop_serializer = ShopSerializer(data=data)
         domain_serializer = DomainSerializer(data=domain_data)
         if shop_serializer.is_valid() and domain_serializer.is_valid():
