@@ -16,7 +16,6 @@ from tenant_users.tenants.tasks import provision_tenant
 
 # Create your views here.
 
-
 class Registration(APIView):##ensure to add permission class
     def post(self, request, format=None):
         marchant = CustomUser.objects.create_user(email=request.data['email'], password=request.data['password'])
