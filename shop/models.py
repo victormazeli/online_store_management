@@ -1,7 +1,7 @@
 from django.shortcuts import render, reverse
 from django.db import models
 from django.contrib.auth import get_user_model
-# from django_tenants.models import TenantMixin, DomainMixin
+from django_tenants.models import TenantMixin, DomainMixin
 from tenant_users.tenants.models import TenantBase
 
 
@@ -21,7 +21,7 @@ class Shop(TenantBase):
         return self.name
 
     
-# class Domain(DomainMixin):
-#     pass
+class Domain(DomainMixin):
+    pass
 
    
