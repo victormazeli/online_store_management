@@ -22,15 +22,15 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates/')
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
-# SECRET_KEY = 'wiejiwiwrwiriw'
+# SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'wiejiwiwrwiriw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get('DEBUG', default=0))
-# DEBUG = True
+# DEBUG = int(os.environ.get('DEBUG', default=0))
+DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOST').split(" ")
-# ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = os.environ.get('ALLOWED_HOST').split(" ")
+ALLOWED_HOSTS = []
 
 
 
@@ -38,22 +38,20 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOST').split(" ")
 
 SHARED_APPS = (
     'django_tenants', # mandatory, should always be before any django app
+    'shop', # you must list the app where your tenant model resides in
+    'users',
     
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'tenant_users.permissions', # Defined in both shared apps and tenant apps
-    'tenant_users.tenants',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django_filters',
     'rest_framework',
-    'rest_framework.authtoken',
-    'shop', # you must list the app where your tenant model resides in
-    'users',
-   
+    'rest_framework.authtoken', 
+    'djoser',  
     'bootstrap4',
 
 )
@@ -62,7 +60,6 @@ TENANT_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'tenant_users.permissions',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -70,6 +67,7 @@ TENANT_APPS = (
     'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
+    'djoser', 
 
     # your tenant-specific apps
     'products',
@@ -100,7 +98,7 @@ REST_FRAMEWORK = {
  
     
 }
-TENANT_USERS_DOMAIN = "cyphertech.com.ng"
+
 TENANT_MODEL = "shop.Shop" # app.Model
 TENANT_DOMAIN_MODEL = "shop.Domain"
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -141,32 +139,30 @@ WSGI_APPLICATION = 'api.wsgi.application'
 
 DATABASES = {
 
-    # 'default': {
-    #      'ENGINE': 'django_tenants.postgresql_backend',
-    #      'NAME': 'postgres', 
-    #      'USER': 'postgres', 
-    #      'PASSWORD': 'welcome@1',
-    #      'HOST': 'localhost', 
-    #      'PORT': '5432',
-    #  }
-   
-     'default': {
-         'ENGINE': os.environ.get('DATABASE_ENGINE'),
-         'NAME': os.environ.get('DATABASE_NAME'), 
-         'USER': os.environ.get('DATABASE_USER'), 
-         'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-         'HOST': os.environ.get('DATABASE_HOST'), 
-         'PORT': os.environ.get('DATABASE_PORT'),
+    'default': {
+         'ENGINE': 'django_tenants.postgresql_backend',
+         'NAME': 'postgres', 
+         'USER': 'postgres', 
+         'PASSWORD': 'welcome@1',
+         'HOST': 'localhost', 
+         'PORT': '5432',
      }
+   
+    #  'default': {
+    #      'ENGINE': os.environ.get('DATABASE_ENGINE'),
+    #      'NAME': os.environ.get('DATABASE_NAME'), 
+    #      'USER': os.environ.get('DATABASE_USER'), 
+    #      'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+    #      'HOST': os.environ.get('DATABASE_HOST'), 
+    #      'PORT': os.environ.get('DATABASE_PORT'),
+    #  }
 }
 
 DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',
 )
 
-AUTHENTICATION_BACKENDS = (
-    'tenant_users.permissions.backend.UserBackend',
-)
+
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 

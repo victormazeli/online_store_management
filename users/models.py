@@ -3,11 +3,10 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-from tenant_users.tenants.models import UserProfile
 from .managers import CustomUserManager
 
 
-class CustomUser(UserProfile):
+class CustomUser(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
     phone_no = models.IntegerField(null=True, blank=True)
     address = models.CharField(max_length=256, null=True, blank=True)
@@ -19,10 +18,10 @@ class CustomUser(UserProfile):
     bankcode = models.IntegerField(null=True, blank=True)
   
 
-    # USERNAME_FIELD = 'email'
-    # REQUIRED_FIELDS = []
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
-    # objects = CustomUserManager()
+    objects = CustomUserManager()
 
     def __str__(self):
         return self.email
