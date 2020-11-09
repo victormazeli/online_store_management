@@ -102,7 +102,7 @@ REST_FRAMEWORK = {
 }
 TENANT_USERS_DOMAIN = "cyphertech.com.ng"
 TENANT_MODEL = "shop.Shop" # app.Model
-TENANT_DOMAIN_MODEL = "shop.Domain"
+# TENANT_DOMAIN_MODEL = "shop.Domain"
 AUTH_USER_MODEL = 'users.CustomUser'
 MIDDLEWARE = [
     'django_tenants.middleware.main.TenantMainMiddleware',
