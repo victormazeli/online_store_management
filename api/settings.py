@@ -22,15 +22,15 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates/')
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ.get('SECRET_KEY')
-SECRET_KEY = 'wiejiwiwrwiriw'
+SECRET_KEY = os.environ.get('SECRET_KEY')
+# SECRET_KEY = 'wiejiwiwrwiriw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = int(os.environ.get('DEBUG', default=0))
-DEBUG = True
+DEBUG = int(os.environ.get('DEBUG', default=0))
+# DEBUG = True
 
-# ALLOWED_HOSTS = os.environ.get('ALLOWED_HOST').split(" ")
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOST').split(" ")
+# ALLOWED_HOSTS = []
 
 
 
@@ -139,23 +139,23 @@ WSGI_APPLICATION = 'api.wsgi.application'
 
 DATABASES = {
 
-    'default': {
-         'ENGINE': 'django_tenants.postgresql_backend',
-         'NAME': 'postgres', 
-         'USER': 'postgres', 
-         'PASSWORD': 'welcome@1',
-         'HOST': 'localhost', 
-         'PORT': '5432',
-     }
-   
-    #  'default': {
-    #      'ENGINE': os.environ.get('DATABASE_ENGINE'),
-    #      'NAME': os.environ.get('DATABASE_NAME'), 
-    #      'USER': os.environ.get('DATABASE_USER'), 
-    #      'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-    #      'HOST': os.environ.get('DATABASE_HOST'), 
-    #      'PORT': os.environ.get('DATABASE_PORT'),
+    # 'default': {
+    #      'ENGINE': 'django_tenants.postgresql_backend',
+    #      'NAME': 'postgres', 
+    #      'USER': 'postgres', 
+    #      'PASSWORD': 'welcome@1',
+    #      'HOST': 'localhost', 
+    #      'PORT': '5432',
     #  }
+   
+     'default': {
+         'ENGINE': os.environ.get('DATABASE_ENGINE'),
+         'NAME': os.environ.get('DATABASE_NAME'), 
+         'USER': os.environ.get('DATABASE_USER'), 
+         'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+         'HOST': os.environ.get('DATABASE_HOST'), 
+         'PORT': os.environ.get('DATABASE_PORT'),
+     }
 }
 
 DATABASE_ROUTERS = (
