@@ -101,15 +101,16 @@ def create_order(request):
 def registration(request):
     if request.method == 'POST':
            tenant_name = request.POST.get('name')
+           schema = request.POST.get('schema')
            email = request.POST.get('email')
            password = request.POST.get('password')
            url = '.cyphertech.com.ng'
            user = CustomUser.objects.create_user(email=email, password=password)
-           tenant = Shop(name=tenant_name, schema_name=tenant_name, user=user)
+           tenant = Shop(schema_name=tenant_name, name=schema, user=user)
            tenant.save()
 
            domain = Domain()
-           domain.domain = tenant.name + url
+           domain.domain = str(tenant.name + url)
            domain.tenant = tenant
            domain.is_primary = True
            domain_instance = domain.save()
