@@ -127,6 +127,11 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+        'loaders': [
+                "django_tenants.template.loaders.filesystem.Loader",  # Must be first
+                "django.template.loaders.filesystem.Loader",
+                "django.template.loaders.app_directories.Loader",
+            ],
         },
     },
 ]
@@ -181,6 +186,23 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+STATICFILES_FINDERS = [
+    "django_tenants.staticfiles.finders.TenantFileSystemFinder",  # Must be first
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
+]
+
+MULTITENANT_TEMPLATE_DIRS = [
+    os.path.join(BASE_DIR, "tenants/%s/templates"),
+]
+
+MULTITENANT_STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "tenants/%s/static" ),
+]
+
+
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -201,9 +223,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_STORAGE = "django_tenants.staticfiles.storage.TenantStaticFilesStorage"
-MULTITENANT_RELATIVE_STATIC_ROOT = ""
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATICFILES_STORAGE = "django_tenants.staticfiles.storage.TenantStaticFilesStorage"
 DEFAULT_FILE_STORAGE = "django_tenants.files.storage.TenantFileSystemStorage"
-MULTITENANT_RELATIVE_MEDIA_ROOT = ""
+
+REWRITE_STATIC_URLS = True
