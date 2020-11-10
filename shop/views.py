@@ -101,9 +101,10 @@ def create_order(request):
 def registration(request):
     if request.method == 'POST':
            tenant_name = request.POST.get('name')
-           user_id = request.POST.get('id')
-           user = CustomUser.objects.get(pk=user_id)
+           email = request.POST.get('email')
+           password = request.POST.get('password')
            url = '.cyphertech.com.ng'
+           user = CustomUser.objects.create_user(email=email, password=password)
            tenant = Shop(name=tenant_name, schema_name=tenant_name, user=user)
            tenant.save()
 
