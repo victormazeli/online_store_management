@@ -5,6 +5,7 @@ from django.core import serializers
 from .models import Shop, Domain
 from customers.models import Customers, CustomerCart
 from orders.models import Order
+from users.models import CustomUser
 
 ##Storefront view
 
@@ -100,8 +101,10 @@ def create_order(request):
 def registration(request):
     if request.method == 'POST':
            tenant_name = request.POST.get('name')
+           user_id = request.POST.get('id')
+           user = CustomUser.objects.get(pk=user_id)
            url = '.cyphertech.com.ng'
-           tenant = Shop(name=tenant_name, schema_name=tenant_name)
+           tenant = Shop(name=tenant_name, schema_name=tenant_name, user=user)
            tenant.save()
 
            domain = Domain()
