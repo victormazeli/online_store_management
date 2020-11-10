@@ -104,13 +104,13 @@ def registration(request):
            schema = request.POST.get('schema')
            email = request.POST.get('email')
            password = request.POST.get('password')
-           url = '.cyphertech.com.ng'
+           url = 'cyphertech.com.ng'
            user = CustomUser.objects.create_user(email=email, password=password)
            tenant = Shop(schema_name=tenant_name, name=schema, user=user)
            tenant.save()
 
            domain = Domain()
-           domain.domain = str(tenant.name + url)
+           domain.domain = '{name}.{url}'.format(name=tenant_name, url=url)
            domain.tenant = tenant
            domain.is_primary = True
            domain_instance = domain.save()
