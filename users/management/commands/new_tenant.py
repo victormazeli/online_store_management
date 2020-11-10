@@ -9,7 +9,6 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         # create your public tenant
         user = CustomUser.objects.create_user(email='admin@cyphertech.com.ng', password='awesome21')
-        user.save()
         tenant = Shop(schema_name='public', name='zeus admin', user=user)
         tenant.save()
 

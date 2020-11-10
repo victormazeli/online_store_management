@@ -34,10 +34,11 @@ class Registration(APIView):##ensure to add permission class
           domain_serializer.save()
           return Response(data={'shop':shop_serializer.data, 'url':domain_serializer}, status=status.HTTP_201_CREATED)
         return Response(data={'shop_error':shop_serializer.errors, 'domain':domain_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        
 
 class StoreDetail(APIView):
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['status', 'id', 'user']
+    filterset_fields = ['id', 'user']
 
     try:
         def get_object(self, pk):
