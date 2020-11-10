@@ -10,29 +10,11 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework import status
 from .models import CustomUser
-from shop.models import Shop, Domain
-from .serializers import UserSerializer, ShopSerializer, DomainSerializer
+from shop.models import Shop
+from .serializers import ShopSerializer
 
 
 # Create your views here.
-
-class Registration(APIView):##ensure to add permission class
-    def post(self, request, format=None):
-       try:
-           tenant = Shop(name=request.data['name'], schema_name=request.data['name'])
-           tenant.save()
-
-           domain = Domain()
-           domain.domain = request.data['name'] + '.cyphertech.com.ng'
-           domain.tenant = tenant
-           domain.is_primary = True
-           domain.save()
-           data = {'store_id':tenant.id, 'store_url':domain.domain}
-       except Shop.DoesNotExist or Domain.DoesNotExist:
-           return Response(data={'error':'Error creating store'}, status=status.HTTP_400_BAD_REQUEST)
-       return Response(data=data, status=status.HTTP_201_CREATED)
-        
-        
 
 class StoreDetail(APIView):
     filter_backends = [DjangoFilterBackend]

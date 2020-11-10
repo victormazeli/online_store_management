@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 from django.core import serializers
-from .models import Shop
+from .models import Shop, Domain
 from customers.models import Customers, CustomerCart
 from orders.models import Order
 
@@ -89,10 +89,25 @@ def cart_customer(request, pk):
     return JsonResponse(data, status=200)
   return JsonResponse({'error': 'could not fetch products'}, status=400)
 
-  def create_order(request):
+def create_order(request):
     if request.method == 'POST':
       new_order = Order(request.POST)
       instance = new_order.save()
       ser_instance = serializers.serialize('json', [ instance,])
       return JsonResponse({'data':ser_instance}, status=200)
     return JsonResponse({'error':'can not create order'}, status=400)
+
+def registration(request):
+    if request.method == 'POST':
+           tenant = Shop(name=request.data['name'], schema_name=request.data['name'])
+           tenant_instance = tenant.save()
+
+           domain = Domain()
+           domain.domain = request.data['name'] + '.cyphertech.com.ng'
+           domain.tenant = tenant
+           domain.is_primary = True
+           domain_instance = domain.save()
+           ser_store = serializers.serialize('json', [ tenant_instance, ])
+           ser_fqdn = serializers.serialize('json', [ domain_instance, ])
+           return JsonResponse({'store':ser_store, 'fqdn':ser_fqdn}, status=201)
+    return JsonResponse({'error':'Error creating store'}, status=400)
