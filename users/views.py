@@ -17,6 +17,7 @@ from .serializers import ShopSerializer, DomainSerializer
 # Create your views here.
 
 class Registration(APIView):
+    permission_classes = [AllowAny]
     def post(self, request, format=None):
         tenant_name = request.data['name']
         schema = request.data['schema']
