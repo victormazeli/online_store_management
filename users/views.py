@@ -10,46 +10,49 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework import status
 from .models import CustomUser
-from shop.models import Shop
+from shop.models import Shop, Domain
 from .serializers import UserSerializer, ShopSerializer, DomainSerializer
 
 
 # Create your views here.
 
 class Registration(APIView):##ensure to add permission class
-    parser_classes = [MultiPartParser]
     def post(self, request, format=None):
-        data = {
-           'name':request.data['name'], 
-           'logo':request.data['logo'], 
-           'description':request.data['description'], 
-           'tagline':request.data['tagline'], 
-           'schema_name':request.data['schema_name'] 
-           }
-        domain_data = {'domain':request.data['name'] + ".cyphertech.com.ng", 'is_primary':True}
-        shop_serializer = ShopSerializer(data=data)
-        domain_serializer = DomainSerializer(data=domain_data)
-        if shop_serializer.is_valid() and domain_serializer.is_valid():
-          shop_serializer.save()
-          domain_serializer.save()
-          return Response(data={'shop':shop_serializer.data, 'url':domain_serializer}, status=status.HTTP_201_CREATED)
-        return Response(data={'shop_error':shop_serializer.errors, 'domain':domain_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+       try:
+           tenant = Shop(name=request.data['name'], schema_name=request.data['name'])
+           tenant.save()
+
+           domain = Domain()
+           domain.domain = request.data['name'] + '.cyphertech.com.ng'
+           domain.tenant = tenant
+           domain.is_primary = True
+           domain.save()
+           data = {'store_id':tenant.id, 'store_url':domain.domain}
+       except Shop.DoesNotExist or Domain.DoesNotExist:
+           return Response(data={'error':'Error creating store'}, status=status.HTTP_400_BAD_REQUEST)
+       return Response(data=data, status=status.HTTP_201_CREATED)
+        
         
 
 class StoreDetail(APIView):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['id', 'user']
 
+    def get(self, request, format=None):
+        shop = Shop.objects.all()
+        serializer = ShopSerializer(shop)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+
+class StoreUpdate(APIView):
+    parser_classes = [MultiPartParser]
+
     try:
         def get_object(self, pk):
             return Shop.objects.get(pk=pk)
     except Shop.DoesNotExist:
         raise Http404
-
-    def get(self, request, format=None):
-        shop = Shop.objects.all()
-        serializer = ShopSerializer(shop)
-        return Response(serializer.data, status=status.HTTP_200_OK)
     
     def put(self, request, pk, format=None):
         shop = self.get_object(pk)
