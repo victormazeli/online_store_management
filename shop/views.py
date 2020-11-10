@@ -36,14 +36,13 @@ def customer_login(request):
 def customer_signup(request):
     if request.method == 'POST':
         email = request.POST.get('email')
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('lastname')
-        password = request.POST.get('password')
         customer = Customers.objects.get(email=email)
         if customer:
             return JsonResponse({'error':'customer already exist'}, status=401)
         else:
-          ser_instance = serializers.serialize('json', [ customer,])
+          new_customer = Customers(request.POST)
+          instance = new_customer.save()
+          ser_instance = serializers.serialize('json', [ instance,])
         return JsonResponse({'data':ser_instance}, status=201) 
     return JsonResponse({'error':'can not register user'}, status=400)
      
@@ -98,21 +97,3 @@ def create_order(request):
       return JsonResponse({'data':ser_instance}, status=200)
     return JsonResponse({'error':'can not create order'}, status=400)
 
-def registration(request):
-    if request.method == 'POST':
-           tenant_name = request.POST.get('name')
-           schema = request.POST.get('schema')
-           email = request.POST.get('email')
-           password = request.POST.get('password')
-           user = CustomUser.objects.create_user(email=email, password=password)
-           tenant = Shop(schema_name=tenant_name, name=schema, user=user)
-           tenant.save()
-
-           domain = Domain()
-           domain.domain = '{}.cyphertech.com.ng'.format(tenant_name)
-           domain.tenant = tenant
-           domain.is_primary = True
-           domain_instance = domain.save()
-           ser_fqdn = serializers.serialize('json', [ domain_instance, ])
-           return JsonResponse({'data':ser_fqdn}, status=201)
-    return JsonResponse({'error':'Error creating store'}, status=400)

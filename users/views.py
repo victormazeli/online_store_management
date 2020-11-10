@@ -10,11 +10,31 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework import status
 from .models import CustomUser
-from shop.models import Shop
-from .serializers import ShopSerializer
+from shop.models import Shop, Domain
+from .serializers import ShopSerializer, DomainSerializer
 
 
 # Create your views here.
+
+class Registration(APIView):
+    def post(self, request, format=None):
+        tenant_name = request.data['name']
+        schema = request.data['schema']
+        email = request.data['email']
+        password = request.data['password']
+        user = CustomUser.objects.create_user(email=email, password=password)
+        tenant = Shop(schema_name=tenant_name, name=schema, user=user)
+        tenant.save()
+
+        domain = Domain()
+        domain.domain = '{}.cyphertech.com.ng'.format(tenant_name)
+        domain.tenant = tenant
+        domain.is_primary = True
+        domain_instance = domain.save()
+
+        fdqn = Domain.objects.get(pk=domain.id)
+        serializer = DomainSerializer
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class StoreDetail(APIView):
     filter_backends = [DjangoFilterBackend]
