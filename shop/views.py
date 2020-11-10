@@ -102,14 +102,13 @@ def registration(request):
            tenant_name = request.POST.get('name')
            url = '.cyphertech.com.ng'
            tenant = Shop(name=tenant_name, schema_name=tenant_name)
-           tenant_instance = tenant.save()
+           tenant.save()
 
            domain = Domain()
-           domain.domain = tenant_name + url
+           domain.domain = tenant.name + url
            domain.tenant = tenant
            domain.is_primary = True
            domain_instance = domain.save()
-           ser_store = serializers.serialize('json', [ tenant_instance, ])
            ser_fqdn = serializers.serialize('json', [ domain_instance, ])
-           return JsonResponse({'store':ser_store, 'fqdn':ser_fqdn}, status=201)
+           return JsonResponse({'data':ser_fqdn}, status=201)
     return JsonResponse({'error':'Error creating store'}, status=400)
