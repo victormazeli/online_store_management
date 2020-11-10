@@ -20,6 +20,9 @@ from shop import views
 urlpatterns = [
     path('', views.HomePage.as_view(), name='home'),
     path('store/', views.registration, name='store_registration'),
+    path('add/', views.addcart, name='addcart'),
+    path('delete/item/', views.deletecartitem, name='deleteitem'),
+    path('create/', views.create_order, name='create_order'),
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),

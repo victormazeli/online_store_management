@@ -99,11 +99,12 @@ def create_order(request):
 
 def registration(request):
     if request.method == 'POST':
-           tenant = Shop(name=request.data['name'], schema_name=request.data['name'])
+           tenant_name = request.POST.get('name')
+           tenant = Shop(name=tenant_name, schema_name=tenant_name)
            tenant_instance = tenant.save()
 
            domain = Domain()
-           domain.domain = request.data['name'] + '.cyphertech.com.ng'
+           domain.domain = tenant_name + '.cyphertech.com.ng'
            domain.tenant = tenant
            domain.is_primary = True
            domain_instance = domain.save()
