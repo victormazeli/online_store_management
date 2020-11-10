@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 from .models import Shop
 from customers.models import Customers, CustomerCart
@@ -8,7 +8,7 @@ from orders.models import Order
 ##Storefront view
 
 def index(request):
-    return render(request)
+    return HttpResponse('Hello World')
 
 # def collections(request):
 #     return render(request)
