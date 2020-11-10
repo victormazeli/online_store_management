@@ -18,9 +18,9 @@ from django.urls import path, include
 from shop import views
 
 urlpatterns = [
-    path('', views.index, name='home'),
+    path('', views.HomePage.as_view(), name='home'),
     path('admin/', admin.site.urls),
-    path('auth', include('djoser.urls')),
+    path('auth/', include('djoser.urls')),
     path('users/', include('users.urls')),
     path('product/', include('products.urls')),
     path('orders/', include('orders.urls')),
