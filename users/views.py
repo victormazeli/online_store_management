@@ -34,7 +34,7 @@ class Registration(APIView):
         domain_instance = domain.save()
 
         fdqn = Domain.objects.get(pk=domain.id)
-        serializer = DomainSerializer
+        serializer = DomainSerializer(fdqn)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class StoreDetail(APIView):
