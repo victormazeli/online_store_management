@@ -6,6 +6,8 @@ urlpatterns = [
     path('registration/', views.Registration.as_view()),
     path('get_store/', views.StoreDetail.as_view()),
     path('update_store/', views.StoreUpdate.as_view()),
+    path('user_update/', views.UserUpdate.as_view()),
+    path('user_detail/', views.UserDetail.as_view()),
    
 ]
 
