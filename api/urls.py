@@ -18,10 +18,7 @@ from django.urls import path, include
 from shop import views
 
 urlpatterns = [
-    path('', views.HomePage.as_view(), name='home'),
-    path('add/', views.addcart, name='addcart'),
-    path('delete/item/', views.deletecartitem, name='deleteitem'),
-    path('create/', views.create_order, name='create_order'),
+    path('', views.index, name='home'),
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
