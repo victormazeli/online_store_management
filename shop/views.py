@@ -12,10 +12,7 @@ from products.models import Products
 
 def index(request):
     store_product = Products.objects.all()[:10]
-    try:
-      domain = Domain.objects.get(tenant=request.tenant)
-    except Domain.DoesNotExist:
-        raise Http404("Store does not exist")
+    domain = Domain.objects.get(tenant=request.tenant)
     return render(request, 'shop/index.html', {'store_detail': domain, 'product_list': store_product} )
 
 
