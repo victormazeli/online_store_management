@@ -15,8 +15,8 @@ class StoreProducts(APIView):##ensure to add permission class
      filter_backends = [DjangoFilterBackend]
      filterset_fields = ['id', 'name']
      def get(self, request, format=None):
-         products = Products.objects.all().order_by('-id')
-         serializer = ProductSerializer(products, many=True)
+         get_products = Products.objects.all().order_by('-id')
+         serializer = ProductSerializer(get_products, many=True)
          return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -76,21 +76,21 @@ class StoreProductDetail(APIView):
             raise Http404
 
     def get(self, request, pk, format=None):
-        product = self.get_object(pk)
-        serializer = ProductSerializer(product)
+        getproduct = self.get_object(pk)
+        serializer = ProductSerializer(getproduct)
         return Response(serializer.data) 
 
     def put(self, request, pk, format=None):
-        product = self.get_object(pk)
-        serializer = ProductSerializer(product, data=request.data, partial=True) 
+        updateproduct = self.get_object(pk)
+        serializer = ProductSerializer(updateproduct, data=request.data, partial=True) 
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
-        product = self.get_object(pk) 
-        product.delete()
+        delproduct = self.get_object(pk) 
+        delproduct.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)    
 
 
