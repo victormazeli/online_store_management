@@ -18,7 +18,8 @@ class StoreProducts(APIView):##ensure to add permission class
          products = Products.objects.all().order_by('-id')
          serializer = ProductSerializer(products, many=True)
          return Response(serializer.data, status=status.HTTP_200_OK)
-    
+         
+class AddProducts(APIView):##ensure to add permission class
      def post(self, request, format=None):
          serializer = ProductSerializer(data=request.data)
          if serializer.is_valid():

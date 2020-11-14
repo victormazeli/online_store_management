@@ -2,7 +2,7 @@ from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 from products import views
 urlpatterns = [
-    path('add_product/', views.StoreProducts.as_view()),
+    path('add_product/', views.AddProducts.as_view()),
     path('get_products/', views.StoreProducts.as_view()),
     path('product_detail/<int:pk>/', views.StoreProductDetail.as_view()),
     path('product_update/<int:pk>/', views.StoreProductDetail.as_view()),
