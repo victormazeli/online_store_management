@@ -119,7 +119,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [TEMPLATE_DIR,],
-        # 'APP_DIRS': True,
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -127,11 +127,11 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-        'loaders': [
-                "django_tenants.template.loaders.filesystem.Loader",  # Must be first
-                "django.template.loaders.filesystem.Loader",
-                "django.template.loaders.app_directories.Loader",
-            ],
+        # 'loaders': [
+        #         "django_tenants.template.loaders.filesystem.Loader",  # Must be first
+        #         "django.template.loaders.filesystem.Loader",
+        #         "django.template.loaders.app_directories.Loader",
+        #     ],
         },
     },
 ]
@@ -186,20 +186,20 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-STATICFILES_FINDERS = [
-    "django_tenants.staticfiles.finders.TenantFileSystemFinder",  # Must be first
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    "compressor.finders.CompressorFinder",
-]
+# STATICFILES_FINDERS = [
+#     "django_tenants.staticfiles.finders.TenantFileSystemFinder",  # Must be first
+#     "django.contrib.staticfiles.finders.FileSystemFinder",
+#     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+#     "compressor.finders.CompressorFinder",
+# ]
 
-MULTITENANT_TEMPLATE_DIRS = [
-    os.path.join(BASE_DIR, "tenants/%s/templates"),
-]
+# MULTITENANT_TEMPLATE_DIRS = [
+#     os.path.join(BASE_DIR, "tenants/%s/templates"),
+# ]
 
-MULTITENANT_STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "tenants/%s/static" ),
-]
+# MULTITENANT_STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "tenants/%s/static" ),
+# ]
 
 
 
@@ -226,7 +226,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATICFILES_STORAGE = "django_tenants.staticfiles.storage.TenantStaticFilesStorage"
-DEFAULT_FILE_STORAGE = "django_tenants.files.storage.TenantFileSystemStorage"
+# STATICFILES_STORAGE = "django_tenants.staticfiles.storage.TenantStaticFilesStorage"
+# DEFAULT_FILE_STORAGE = "django_tenants.files.storage.TenantFileSystemStorage"
 
-REWRITE_STATIC_URLS = True
+# REWRITE_STATIC_URLS = True
