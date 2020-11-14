@@ -11,12 +11,12 @@ from products.models import Products
 ##Storefront view
 
 def index(request):
-    products = Products.objects.all()[:10]
+    store_product = Products.objects.all()[:10]
     try:
       domain = Domain.objects.get(tenant=request.tenant)
     except Domain.DoesNotExist:
         raise Http404("Store does not exist")
-    return render(request, 'shop/index.html', {'store_detail': domain, 'products':products} )
+    return render(request, 'shop/index.html', {'store_detail': domain, 'product_list': store_product} )
 
 
 # def collections(request):
