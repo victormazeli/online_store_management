@@ -39,6 +39,7 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOST').split(" ")
 SHARED_APPS = (
     'django_tenants', # mandatory, should always be before any django app
     'shop', # you must list the app where your tenant model resides in
+    'users',
     
     'django.contrib.admin',
     'django.contrib.auth',
@@ -47,7 +48,6 @@ SHARED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'users',
     'django_filters',
     'rest_framework',
     'rest_framework.authtoken', 
@@ -62,13 +62,7 @@ TENANT_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.sites',
-    'django_filters',
-    'rest_framework',
-    'rest_framework.authtoken',
-    'djoser', 
-
+    
     # your tenant-specific apps
     'products',
     'sales',
@@ -126,7 +120,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ],
+            ]
         # 'loaders': [
         #         "django_tenants.template.loaders.filesystem.Loader",  # Must be first
         #         "django.template.loaders.filesystem.Loader",

@@ -9,7 +9,7 @@ services:
             - static_volume:/usr/src/app/static
             - media_volume:/usr/src/app/media
         ports: 
-            - "8080:80"
+            - "80:80"
         depends_on: 
             - webapp 
         restart: "on-failure"
