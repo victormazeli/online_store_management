@@ -42,4 +42,4 @@ class ProductVariation(models.Model):
     quantity = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.option.option
+        return self.option.name

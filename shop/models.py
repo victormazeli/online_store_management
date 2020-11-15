@@ -14,8 +14,6 @@ class Shop(TenantMixin):
     created_date = models.DateField(auto_now_add=True) #give a default date value
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
-    auto_create_schema = True
-
     def __str__(self):
         return self.name
 
