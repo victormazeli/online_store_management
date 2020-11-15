@@ -62,7 +62,13 @@ TENANT_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    
+    'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django_filters',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'djoser', 
+
     # your tenant-specific apps
     'products',
     'sales',
@@ -120,7 +126,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ]
+            ],
         # 'loaders': [
         #         "django_tenants.template.loaders.filesystem.Loader",  # Must be first
         #         "django.template.loaders.filesystem.Loader",
